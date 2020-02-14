@@ -77,3 +77,45 @@ IEnumerable<KazaLokasyonResponse> result = await client.GetKazaLokasyonAsync(Dat
 |10/02/2020 21:00:00|29.064054|40.982937|Kaza|
 |...|...|...|...|
 
+### GetAracKonumlariAsync
+
+```csharp
+IbbClient client = new IbbClient();
+IEnumerable<AracKonumuResponse> result = await client.GetAracKonumlariAsync();
+```
+
+|Operator|Garaj|KapiNo|Saat|Boylam|Enlem|Hiz|Plaka|
+|---|---|---|---|---|---|---|---|
+|İETT|G_IKT|B5308|14/02/2020 04:09:00|28.791178|41.06148|0|34 NL 8219|
+|İETT|G_IKT|B5323|14/02/2020 04:09:00|28.791714|41.06135|0|34 NL 8204|
+|İETT|PG_TPK|B5338|14/02/2020 04:09:00|28.928572|41.016937|0|34 NL 8197|
+|...|...|...|...|...|...|...|...|
+
+---------------
+
+### Subscribe to updates on the `GetAracKonumlariAsync` endpoint
+
+You can also subscribe to the location data. The data isn't *live* in the sense that it isn't streamed from anywhere, the service is simply executing the `GetAracKonumlariAsync` endpoint every minute behind the scenes, essentially polling for new data. 
+Data returned from the API is compared to data stored in an internal cache, if any new data is present, an event is raised containing the updates. 
+
+The cache service is not a data store. It's only used to present the client with updates on new data, and also to ignore data that's been received late and is out of order (due to newer items existing).
+
+```csharp
+    CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromMinutes(60));
+    IbbClient client = new IbbClient();
+    
+    // The cache service raises events notifying the client of new data.
+    // It also ensures that data that's received out of order is ignored.
+    AracKonumCacheService cacheService = new AracKonumCacheService(client);
+    
+    cacheService.OnAracKonumUpdate += (sender, data) => 
+    {
+        // The event arguments contains a collection of all the updated data.
+        // The updated elements are batched together.
+        IEnumerable<AracKonumuResponse> updatedData = data.UpdatedAracKonumlari;
+        Console.WriteLine($"Elements updated: {updatedData.Count()}");
+    };
+    
+    await cacheService.BeginTracking(cts.Token);
+```
+
