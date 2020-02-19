@@ -3,7 +3,6 @@ A .NET client library for [IETT IBB Web Services](https://data.ibb.gov.tr/datase
 
 It abstracts away the messy SOAP api, and is essentially just a facade.
 
-
 ## Examples
 
 ### GetDurakAsync
@@ -119,3 +118,4 @@ The cache service is not a data store. It's only used to present the client with
     await cacheService.BeginTracking(cts.Token);
 ```
 
+![Map](https://i.imgyukle.com/2020/02/20/nieILc.png)
