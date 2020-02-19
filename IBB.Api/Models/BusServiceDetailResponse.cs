@@ -3,21 +3,21 @@
 namespace IBB.Api.Models
 {
     [XmlRoot(ElementName = "Table")]
-    public class HatServisResponse
+    public class BusServiceDetailResponse
     {
         [XmlElement(ElementName = "HAT_KODU")]
-        public string HatKodu { get; set; }
+        public string RouteId { get; set; }
 
         [XmlElement(ElementName = "HAT_ADI")]
-        public string HatAdi { get; set; }
+        public string NameOfRoute { get; set; }
 
         [XmlElement(ElementName = "TAM_HAT_ADI")]
-        public string TamHatAdi { get; set; }
+        public string FullNameOfRoute { get; set; }
 
         [XmlElement(ElementName = "HAT_DURUMU")]
-        public string HatDurumu { get; set; }
+        public string RouteStatus { get; set; }
 
         [XmlElement(ElementName = "BOLGE")]
-        public string Bolge { get; set; }
+        public string Area { get; set; }
     }
 }

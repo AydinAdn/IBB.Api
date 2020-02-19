@@ -26,83 +26,52 @@ namespace IBB.Api
             this.hatDurakDetayClient = new IbbSoapClient();
         }
 
-        /// <summary>
-        ///     Tüm Garaj Listesi.
-        /// </summary>
-        /// <returns>Garaj Listesi</returns>
-        public async Task<IEnumerable<GarajResponse>> GetGarajAsync()
+        public async Task<IEnumerable<BusGarageResponse>> GetGaragesAsync()
         {
             GetGaraj_jsonResponse garajJsonAsync = await this.hatDurakSoapClient.GetGaraj_jsonAsync();
             string jsonResponse = garajJsonAsync.Body.GetGaraj_jsonResult;
 
-            return JsonConvert.DeserializeObject<GarajResponse[]>(jsonResponse);
+            return JsonConvert.DeserializeObject<BusGarageResponse[]>(jsonResponse);
         }
 
-        /// <summary>
-        ///     Tüm Durak Listesi.
-        /// </summary>
-        /// <returns>Durak Listesi</returns>
-        public async Task<IEnumerable<DurakResponse>> GetDurakAsync()
+        public async Task<IEnumerable<BusStopResponse>> GetBusStopsAsync()
         {
             GetDurak_jsonResponse durakJsonAsync = await this.hatDurakSoapClient.GetDurak_jsonAsync("");
             string jsonResponse = durakJsonAsync.Body.GetDurak_jsonResult;
 
-            return JsonConvert.DeserializeObject<DurakResponse[]>(jsonResponse);
+            return JsonConvert.DeserializeObject<BusStopResponse[]>(jsonResponse);
         }
 
-        /// <summary>
-        ///     Durak kodu
-        /// </summary>
-        /// <param name="durakKodu">Aranan durak</param>
-        /// <returns>Durak</returns>
-        public async Task<IEnumerable<DurakResponse>> GetDurakAsync(int durakKodu)
+        public async Task<IEnumerable<BusStopResponse>> GetBusStopsAsync(int busStopId)
         {
             GetDurak_jsonResponse durakJsonAsync =
-                await this.hatDurakSoapClient.GetDurak_jsonAsync(durakKodu.ToString());
+                await this.hatDurakSoapClient.GetDurak_jsonAsync(busStopId.ToString());
             string jsonResponse = durakJsonAsync.Body.GetDurak_jsonResult;
 
-            return JsonConvert.DeserializeObject<DurakResponse[]>(jsonResponse);
+            return JsonConvert.DeserializeObject<BusStopResponse[]>(jsonResponse);
         }
 
-        /// <summary>
-        ///     Araclarin guncel konum bilgileri.
-        /// </summary>
-        /// <returns>Anlık araç konum bilgileri</returns>
-        public async Task<IEnumerable<AracKonumuResponse>> GetAracKonumlariAsync()
+        public async Task<IEnumerable<VehicleLocationResponse>> GetVehicleLocationsAsync()
         {
             GetFiloAracKonum_jsonResponse aracKonumJsonResponse = await this.seferSoapClient.GetFiloAracKonum_jsonAsync();
 
             string jsonResponse = aracKonumJsonResponse.Body.GetFiloAracKonum_jsonResult;
 
-            return JsonConvert.DeserializeObject<AracKonumuResponse[]>(jsonResponse);
+            return JsonConvert.DeserializeObject<VehicleLocationResponse[]>(jsonResponse);
         }
 
-        /// <summary>
-        ///     Yapılan Kazaların X, Y koordinatlarını içermektedir.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<KazaLokasyonResponse>> GetKazaLokasyonAsync(DateTime date)
+        public async Task<IEnumerable<AccidentLocationResponse>> GetAccidentsLocationDataAsync(DateTime date)
         {
             GetKazaLokasyon_jsonResponse result = await this.seferSoapClient.GetKazaLokasyon_jsonAsync(date.ToString("yyyy-MM-dd"));
 
-            return JsonConvert.DeserializeObject<KazaLokasyonResponse[]>(result.Body.GetKazaLokasyon_jsonResult);
+            return JsonConvert.DeserializeObject<AccidentLocationResponse[]>(result.Body.GetKazaLokasyon_jsonResult);
         }
+        
+        public async Task<IEnumerable<BusRouteResponse>> GetBusRouteDetailsAsync() => await this.GetBusRouteDetailsAsync("");
 
-        /// <summary>
-        ///     Tum otobus hatlarin tum duraklari
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<DurakDetayResponse>> GetDurakDetayAsync() => await this.GetDurakDetayAsync("");
-
-        /// <summary>
-        ///     Bir otobus hattinin duraklari. 
-        /// </summary>
-        /// <param name="hatKodu">Otobus hat kodu</param>
-        /// <returns></returns>
-        public async Task<IEnumerable<DurakDetayResponse>> GetDurakDetayAsync(string hatKodu)
+        public async Task<IEnumerable<BusRouteResponse>> GetBusRouteDetailsAsync(string busRouteId)
         {
-            DurakDetay_GYYResponse result = await this.hatDurakDetayClient.DurakDetay_GYYAsync(hatKodu);
+            DurakDetay_GYYResponse result = await this.hatDurakDetayClient.DurakDetay_GYYAsync(busRouteId);
 
             string xml = result.Body.DurakDetay_GYYResult.ToString();
 
@@ -115,27 +84,18 @@ namespace IBB.Api
             }
         }
 
-        /// <summary>
-        ///     Tum otobus hatlarin servis detaylari
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<HatServisResponse>> GetHatServisAsync() => await this.GetHatServisAsync("");
+        public async Task<IEnumerable<BusServiceDetailResponse>> GetBusServiceDetailsAsync() => await this.GetBusServiceDetailsAsync("");
 
-        /// <summary>
-        ///     Bir otobus hattinin servis detaylari
-        /// </summary>
-        /// <param name="hatKodu">Otobus hat kodu</param>
-        /// <returns>Hat servis detaylari</returns>
-        public async Task<IEnumerable<HatServisResponse>> GetHatServisAsync(string hatKodu)
+        public async Task<IEnumerable<BusServiceDetailResponse>> GetBusServiceDetailsAsync(string busRouteId)
         {
-            HatServisi_GYYResponse result = await this.hatDurakDetayClient.HatServisi_GYYAsync(hatKodu);
+            HatServisi_GYYResponse result = await this.hatDurakDetayClient.HatServisi_GYYAsync(busRouteId);
 
             XmlSerializer serializer = new XmlSerializer(typeof(HatServisXmlRoot));
 
             using (TextReader reader = new StringReader(result.Body.HatServisi_GYYResult.ToString()))
             {
                 HatServisXmlRoot xmlRoot = (HatServisXmlRoot) serializer.Deserialize(reader);
-                List<HatServisResponse> response = xmlRoot.HatServisResponse;
+                List<BusServiceDetailResponse> response = xmlRoot.BusServiceDetailResponse;
                 return response;
             }
         }

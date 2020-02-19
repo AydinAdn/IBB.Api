@@ -2,18 +2,18 @@
 
 namespace IBB.Api.Models
 {
-    public class GarajResponse
+    public class BusGarageResponse
     {
         [JsonProperty("ID")]
         public int Id { get; set; }
 
         [JsonProperty("GARAJ_ADI")]
-        public string GarajAdi { get; set; }
+        public string NameOfGarage { get; set; }
 
         [JsonProperty("GARAJ_KODU")]
-        public string GarajKodu { get; set; }
+        public string GarageId { get; set; }
 
         [JsonProperty("KOORDINAT")]
-        public string Koordinat { get; set; }
+        public string Coordinates { get; set; }
     }
 }

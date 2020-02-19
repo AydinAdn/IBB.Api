@@ -7,7 +7,7 @@ namespace IBB.Api.Models
     public class DurakDetayXmlRoot
     {
         [XmlElement(ElementName = "Table")]
-        public List<DurakDetayResponse> Table { get; set; }
+        public List<BusRouteResponse> Table { get; set; }
 
         [XmlAttribute(AttributeName = "xmlns")]
         public string Xmlns { get; set; }

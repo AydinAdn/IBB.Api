@@ -7,7 +7,7 @@ namespace IBB.Api.Models
     public class HatServisXmlRoot
     {
         [XmlElement(ElementName = "Table")]
-        public List<HatServisResponse> HatServisResponse { get; set; }
+        public List<BusServiceDetailResponse> BusServiceDetailResponse { get; set; }
 
         [XmlAttribute(AttributeName = "xmlns")]
         public string Xmlns { get; set; }

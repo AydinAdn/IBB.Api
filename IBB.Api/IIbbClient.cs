@@ -8,61 +8,61 @@ namespace IBB.Api
     public interface IIbbClient
     {
         /// <summary>
-        ///     Tüm Garaj Listesi.
+        ///     Gets a list of all the Bus Garages.
         /// </summary>
         /// <returns>Garaj Listesi</returns>
-        Task<IEnumerable<GarajResponse>> GetGarajAsync();
+        Task<IEnumerable<BusGarageResponse>> GetGaragesAsync();
 
         /// <summary>
-        ///     Tüm Durak Listesi.
+        ///     Gets a list of all bus stops.
         /// </summary>
-        /// <returns>Durak Listesi</returns>
-        Task<IEnumerable<DurakResponse>> GetDurakAsync();
+        /// <returns>Entire list of bus stops</returns>
+        Task<IEnumerable<BusStopResponse>> GetBusStopsAsync();
 
         /// <summary>
-        ///     Durak kodu
+        ///     Get bus stop by id
         /// </summary>
-        /// <param name="durakKodu">Aranan durak</param>
-        /// <returns>Durak</returns>
-        Task<IEnumerable<DurakResponse>> GetDurakAsync(int durakKodu);
+        /// <param name="busStopId">Id of the bus stop</param>
+        /// <returns>The bus stop</returns>
+        Task<IEnumerable<BusStopResponse>> GetBusStopsAsync(int busStopId);
 
         /// <summary>
-        ///     Araclarin guncel konum bilgileri.
+        ///     Get live geolocation data of all vehicles.
         /// </summary>
-        /// <returns>Anlık araç konum bilgileri</returns>
-        Task<IEnumerable<AracKonumuResponse>> GetAracKonumlariAsync();
+        /// <returns>Geolocation data on all running public bus services</returns>
+        Task<IEnumerable<VehicleLocationResponse>> GetVehicleLocationsAsync();
 
         /// <summary>
-        ///     Yapılan Kazaların X, Y koordinatlarını içermektedir.
+        ///     Gets X,Y coordinates of road traffic accidents that have occured.
         /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
-        Task<IEnumerable<KazaLokasyonResponse>> GetKazaLokasyonAsync(DateTime date);
+        /// <param name="date">Date to search for accidents</param>
+        /// <returns>Data on accidents that have occurred on the specified day.</returns>
+        Task<IEnumerable<AccidentLocationResponse>> GetAccidentsLocationDataAsync(DateTime date);
 
         /// <summary>
-        ///     Tum otobus hatlarin tum duraklari
+        ///     Gets the routes for all bus services, detailing each bus stop on its route. 
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<DurakDetayResponse>> GetDurakDetayAsync();
+        /// <returns>All bus routes</returns>
+        Task<IEnumerable<BusRouteResponse>> GetBusRouteDetailsAsync();
 
         /// <summary>
-        ///     Bir otobus hattinin duraklari. 
+        ///     Gets the route served by the specified bus route id. 
         /// </summary>
-        /// <param name="hatKodu">Otobus hat kodu</param>
-        /// <returns></returns>
-        Task<IEnumerable<DurakDetayResponse>> GetDurakDetayAsync(string hatKodu);
+        /// <param name="busRouteId">Bus route id</param>
+        /// <returns>The bus route for the specified route id</returns>
+        Task<IEnumerable<BusRouteResponse>> GetBusRouteDetailsAsync(string busRouteId);
 
         /// <summary>
-        ///     Tum otobus hatlarin servis detaylari
+        ///     Gets the list of all public bus services with route ids and the locations it provides a service between.
         /// </summary>
-        /// <returns></returns>
-        Task<IEnumerable<HatServisResponse>> GetHatServisAsync();
+        /// <returns>The list of public bus services</returns>
+        Task<IEnumerable<BusServiceDetailResponse>> GetBusServiceDetailsAsync();
 
         /// <summary>
-        ///     Bir otobus hattinin servis detaylari
+        ///     Gets the bus service information including the locations it provides a service between.
         /// </summary>
-        /// <param name="hatKodu">Otobus hat kodu</param>
-        /// <returns>Hat servis detaylari</returns>
-        Task<IEnumerable<HatServisResponse>> GetHatServisAsync(string hatKodu);
+        /// <param name="busRouteId">The bus route id</param>
+        /// <returns>Bus service details</returns>
+        Task<IEnumerable<BusServiceDetailResponse>> GetBusServiceDetailsAsync(string busRouteId);
     }
 }
