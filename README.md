@@ -105,13 +105,13 @@ The cache service is not a data store. It's only used to present the client with
     
     // The cache service raises events notifying the client of new data.
     // It also ensures that data that's received out of order is ignored.
-    AracKonumCacheService cacheService = new AracKonumCacheService(client);
+    VehicleLocationCacheService cacheService = new VehicleLocationCacheService(client);
     
-    cacheService.OnAracKonumUpdate += (sender, data) => 
+    cacheService.OnVehicleLocationUpdate += (sender, data) => 
     {
         // The event arguments contains a collection of all the updated data.
         // The updated elements are batched together.
-        IEnumerable<AracKonumuResponse> updatedData = data.UpdatedAracKonumlari;
+        IEnumerable<VehiclesLocationUpdatedEventArgs> updatedData = data.UpdatedVehicleLocations;
         Console.WriteLine($"Elements updated: {updatedData.Count()}");
     };
     
