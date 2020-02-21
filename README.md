@@ -118,4 +118,4 @@ The cache service is not a data store. It's only used to present the client with
     await cacheService.BeginTracking(cts.Token);
 ```
 
-![Map](https://i.imgyukle.com/2020/02/20/nieILc.png)
+![Map](https://i.ibb.co/TkG19zv/vlc-i24-Erj-Xfo-G.png)
